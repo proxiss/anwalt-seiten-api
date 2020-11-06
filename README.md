@@ -5,6 +5,9 @@ Die API darf zur Abfrage einzelner Datensätze unserer Anwaltsdatenbank im Rahme
 ## Rechte und Nutzung
 Die Teilnehmer unserer Datenbank haben uns das Recht erteilt, die hier publizierten Daten zu verarbeiten und zu veröffentlichen. Ihnen nicht! Kontaktieren Sie im Zweifel den Betroffenen oder uns. 
 
-**Hinweis: Als Nutzer der API sind Sie für die Eihaltung der Regelungen der DSGVO verantwortlich.**
+**Hinweis: Als Nutzer der API sind Sie für die Einhaltung der Regelungen der DSGVO verantwortlich.**
+
+
+Den aktuellsten Stand finden Sie hier: https://editor.swagger.io/?url=https://raw.githubusercontent.com/proxiss/anwalt-seiten-api/main/v1/swagger.yaml
 
 
