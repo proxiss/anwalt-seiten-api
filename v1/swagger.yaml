@@ -1,0 +1,507 @@
+swagger: "2.0"
+info:
+  description: "Das ist die API Dokumentation zu [anwalt-seiten.de](https://www.anwalt-seiten.de).  anwalt-seiten.de ist ein Anwaltsverzeichnis mit Fokus auf den Erstkontakt von Anwalt und Mandant. Die Daten werden direkt von den teilnehmenden Kanzleien gepflegt. Die Teilnahme ist kostenlos. Sie dürfen diese Daten für Apps nutzen. Sie dürfen diese Daten nicht zur Weiterverarbeitung anbieten."
+  version: "1.0.0"
+  title: "anwalt-seiten.de API"
+  termsOfService: "https://www.anwalt-seiten.de/api/terms/"
+  contact:
+    email: "redaktion@anwalt-seiten.de"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "www.anwalt-seiten.de"
+basePath: "/api/v1"
+tags:
+  - name: "data"
+    description: "Datensatzabfragen nach Id"
+  - name: "query"
+    description: "Suchanfragen nach verschiedenen Parametern"
+schemes:
+  - "https"
+paths:
+  /data/anwalt/{id}:
+    get:
+      tags:
+        - "data"
+      summary: "Datensatz zu einem Profileintrag abrufen"
+      description: ""
+      operationId: "getAnwalt"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID des Profileintrags"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Anwalt"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+  /data/artikel/{id}:
+    get:
+      tags:
+        - "data"
+      summary: "Datensatz zu einem Fachartikel abrufen"
+      description: ""
+      operationId: "getArtikel"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID des Fachartikels"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Fachartikel"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+  /data/kanzlei/{id}:
+    get:
+      tags:
+        - "data"
+      summary: "Datensatz zu einer Kanzleimitteilung / Stellenanzeige etc. abrufen"
+      description: ""
+      operationId: "getMitteilung"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID der Mitteilung"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Mitteilung"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+  /data/user/{uid}:
+    get:
+      tags:
+        - "data"
+      summary: "Datensatz zu einer teilnehmenden Kanzlei abrufen"
+      description: ""
+      operationId: "getUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uid"
+          in: "path"
+          description: "User-ID der Kanzlei"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Userdata"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+  /query/artikelsof/{anwalt_id}:
+    get:
+      tags:
+        - "query"
+      summary: "Fachartikel eines bestimmten Anwalts abrufen"
+      description: ""
+      operationId: "queryArtikelsOf"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "anwalt_id"
+          in: "path"
+          description: "ID des Anwalts"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FachartikelProxy"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+  /query/nearby:
+    get:
+      tags:
+        - "query"
+      summary: "Anwaltsprofile in der Nähe abrufen"
+      description: ""
+      operationId: "queryNearBy"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "lat"
+          in: "query"
+          description: "Latitude"
+          required: true
+          type: "number"
+        - name: "lon"
+          in: "query"
+          description: "Longitude"
+          required: true
+          type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnwaltProxyGeoExt"
+        "403":
+          description: "Access denied"
+        "404":
+          description: "Not found"
+definitions:
+  Rating:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+      avg:
+        type: "number"
+        format: "float"
+      min:
+        type: "integer"
+        format: "int64"
+      max:
+        type: "integer"
+        format: "int64"
+      url:
+        type: "string"
+        format: "uri"
+  Mitteilung:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "Eigentümer User-Id"
+      valid_from:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      valid_to:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      type:
+        type: "string"
+        description: "ZB Stellenanzeige, Meldung ..."
+      url:
+        type: "string"
+        format: "uri"
+      simpletext:
+        type: "string"
+      bigtext:
+        type: "string"
+        description: "Contains HTML tags"
+  MitteilungProxy:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "Eigentümer User-Id"
+      valid_from:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      valid_to:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      type:
+        type: "string"
+        description: "ZB Stellenanzeige, Meldung ..."
+      url:
+        type: "string"
+        format: "uri"
+  FachartikelProxy:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "Eigentümer User-Id"
+      autor:
+        type: "integer"
+        format: "int64"
+        description: "Autor Profil-Id"
+      title:
+        type: "string"
+      url:
+        type: "string"
+        format: "uri"
+  Fachartikel:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "Eigentümer User-Id"
+      autor:
+        type: "integer"
+        format: "int64"
+        description: "Autor Profil-Id"
+      title:
+        type: "string"
+      text:
+        type: "string"
+        description: "Contains HTML tags"
+      url:
+        type: "string"
+        format: "uri"
+      fach:
+        type: "array"
+        items:
+          type: "string"
+      tags:
+        type: "array"
+        items:
+          type: "string"
+  AnwaltProxy:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      gender:
+        type: "string"
+        enum:
+          - "m"
+          - "w"
+          - "d"
+      profiltitel:
+        type: "string"
+      kanzlei:
+        type: "string"
+      url:
+        type: "string"
+        format: "uri"
+  AnwaltProxyGeoExt:
+    allOf:
+      - $ref: "#/definitions/AnwaltProxy"
+      - type: object
+        properties:
+          user_id:
+            type: "integer"
+            format: "int64"
+            description: "Eigentümer User-Id"
+          distance:
+            type: "number"
+            format: "float"
+          plz:
+            type: "string"
+          latlon:
+            type: "string"
+          ort:
+            type: "string"
+          thumbnail:
+            type: "string"
+            format: "uri"
+  Anwalt:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      vid:
+        type: "integer"
+        format: "int64"
+      created:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      changed:
+        type: "integer"
+        format: "int64"
+        description: "timestamp"
+      status:
+        type: "integer"
+        format: "int64"
+      gender:
+        type: "string"
+        enum:
+          - "m"
+          - "w"
+          - "d"
+      name:
+        type: "string"
+      titel:
+        type: "string"
+      suffixtitel:
+        type: "string"
+      profiltitel:
+        type: "string"
+      vorname:
+        type: "string"
+      telefax:
+        type: "string"
+      telefon:
+        type: "string"
+      email:
+        type: "string"
+      plz:
+        type: "string"
+      strasse:
+        type: "string"
+      ort:
+        type: "string"
+      lat:
+        type: "number"
+        format: "float"
+      lon:
+        type: "number"
+        format: "float"
+      kammer:
+        type: "string"
+      kanzlei:
+        type: "string"
+      hausnummer:
+        type: "string"
+      funktion:
+        type: "string"
+      vita:
+        type: "string"
+        description: "Contains HTML tags"
+      homepage:
+        type: "string"
+        format: "uri"
+      profilurl:
+        type: "string"
+        format: "uri"
+      photo:
+        type: "string"
+        format: "uri"
+      thumbnail:
+        type: "string"
+        format: "uri"
+      mediumphoto:
+        type: "string"
+        format: "uri"
+      schwerpunkte:
+        type: "array"
+        items:
+          type: "string"
+      fachanwalt:
+        type: "array"
+        items:
+          type: "string"
+      rating:
+        $ref: "#/definitions/Rating"
+  Userdata:
+    type: "object"
+    properties:
+      anwalte:
+        type: "array"
+        items:
+          $ref: "#/definitions/AnwaltProxy"
+      artikel:
+        type: "array"
+        items:
+          $ref: "#/definitions/FachartikelProxy"
+      weitere:
+        type: "array"
+        items:
+          $ref: "#/definitions/MitteilungProxy"
+externalDocs:
+  description: "Über anwalt-seiten.de"
+  url: "https://www.anwalt-seiten.de/ueber-uns"
