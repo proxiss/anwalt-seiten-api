@@ -3,7 +3,7 @@ info:
   description: "Das ist die API Dokumentation zu [anwalt-seiten.de](https://www.anwalt-seiten.de).  anwalt-seiten.de ist ein Anwaltsverzeichnis mit Fokus auf den Erstkontakt von Anwalt und Mandant. Die Daten werden direkt von den teilnehmenden Kanzleien gepflegt. Die Teilnahme ist kostenlos. Sie dürfen diese Daten für Apps nutzen. Sie dürfen diese Daten nicht zur Weiterverarbeitung anbieten."
   version: "1.0.0"
   title: "anwalt-seiten.de API"
-  termsOfService: "https://www.anwalt-seiten.de/api/terms/"
+  termsOfService: "https://www.anwalt-seiten.de/open-api"
   contact:
     email: "redaktion@anwalt-seiten.de"
   license:
